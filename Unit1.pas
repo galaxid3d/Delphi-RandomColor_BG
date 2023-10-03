@@ -1,147 +1,155 @@
-unit Aaaa?;
+unit Unit1;
 
 interface
 
 uses
-  Aaaaaaa, Aaaaaaaa, Aaaaa, Aaaaaaaa, Aaaaa, AaaAaaaa, Aaaaaaa, Aaaaaaaa, Aaaa;
+  Windows, Messages, Forms, Graphics, Menus, ExtCtrls, Classes, Controls, Math;
 
 type
-  AAaaa? = class(AAaaa)
-    AaaaaAaa?: AAaaaaAaa;
-    Aaaaa?: AAaaaa;
-    AaaaaAaa_aAaaa: AAaaaaAaaa;
-    Aaaaaaaaaa_aAaaa: AAaaaAaaa;
-    Aaaaa_aAaaa: AAaaaAaaa;
-    procedure AaaaAaaaaa(Aaaaaa: AAaaaaa);
-    procedure Aaaaa?Aaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaAaaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaaAaa?AaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure Aaaaaaaaaa_aAaaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure Aaaaa_aAaaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaaAaa?Aaaaa(Aaaaaa: AAaaaaa);
+  TForm1 = class(TForm)
+    PaintBox1: TPaintBox;
+    Timer1: TTimer;
+    PaintBox_pMenu: TPopupMenu;
+    Properties_pMenu: TMenuItem;
+    Pause_pMenu: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure PaintBox1DblClick(Sender: TObject);
+    procedure Properties_pMenuClick(Sender: TObject);
+    procedure Pause_pMenuClick(Sender: TObject);
+    procedure PaintBox1Paint(Sender: TObject);
   private
-    { Aaaaaaa aaaaaaaaaaaa }
+    { Private declarations }
   public
-    procedure AaaAaaa(var Aaaaaaa: AAaaaaaa); message AA_AAAAAA;
-    procedure AaaAaaaaaaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaAaaaaaaa(Aaaaaa: AAaaaaa);
+    procedure HotKeys(var Message: TMessage); message WM_HOTKEY;
+    procedure AppDeactivate(Sender: TObject);
+    procedure AppActivate(Sender: TObject);
   end;
 
 var
-  Aaaa?: AAaaa?;
-  a:AAaaaaa;
-  Aaaa_aaaaa,Aaa_aaaaa:Aaaaaaa; //aaaaaaaaa aaaaaaaa aa AaaaaAaa
-  aaaa: Aaaaaaa = -?;
+  Form1: TForm1;
+  b: TBitmap;
+  Left_coord, Top_coord: Integer; //положение квадрата на PaintBox
+  size: Integer = -1;
 
 implementation
 
-uses Aaaa?;
+uses Unit2;
 
-{$A *.aaa}
+{$R *.dfm}
 
-procedure AaaAaaaaaa(); //aaaaaa aaa aaaaaaaaaa aa aaaa aaaaa
-var a,a,Aaa_aaaaa:Aaaaaaa;
+procedure AllSquares(); //рисует все квадратики на весь экран
+var
+  j, i, Top_coord: Integer;
 begin
-  Aaa_aaaaa:=?;
-  for a:=? to Aaaaa((Aaaa?.AaaaaAaa?.Aaaaaa)/aaaa)+? do begin
-    Aaaa_aaaaa:=?;
-    for a:=? to Aaaaa((Aaaa?.AaaaaAaa?.Aaaaa)/aaaa)+? do begin
-      a.Aaaaaa.Aaaaa.Aaaaa:=(Aaaaaa(????????));
-      a.Aaaaaa.AaaaAaaa(Aaaa(Aaaa_aaaaa,Aaa_aaaaa,Aaaa_aaaaa+aaaa,Aaa_aaaaa+aaaa));
-      Aaa(Aaaa_aaaaa,aaaa);  end;
-    Aaa(Aaa_aaaaa,aaaa);end;
-  Aaaa?.AaaaaAaa?.Aaaaaa.Aaaa(?,?,a);
+  Top_coord := 0;
+  for j := 0 to Round((Form1.PaintBox1.Height) / size) + 1 do begin
+    Left_coord := 0;
+    for i := 0 to Round((Form1.PaintBox1.Width) / size) + 1 do begin
+      b.Canvas.Brush.Color := (Random(16777216));
+      b.Canvas.FillRect(Rect(Left_coord, Top_coord, Left_coord + size, Top_coord + size));
+      Inc(Left_coord, size); end;
+    Inc(Top_coord, size); end;
+  Form1.PaintBox1.Canvas.Draw(0, 0, b);
 end;
 
-procedure AaaaaaAaaaaaa(); //aaaaaa aaaaaaaa aaaaaaa
-var a,a,a,A,Aaaa_aaaaa,Aaa_aaaaa: Aaaaaaa; Aaaaaaa: array of Aaaaaaa; //aaaaaaa aaaaaaaaa aaaaaaaaaaa
+procedure RandomSquares(); //рисует случайый квадрат
+var
+  k, m, i, N, Left_coord, Top_coord: Integer;
+  Squares: array of Integer; //индексы случайных квадратиков
 begin
-  a := Aaaa(Aaaa?.AaaaaAaa?.Aaaaaa / aaaa);
-  a := Aaaa(Aaaa?.AaaaaAaa?.Aaaaa / aaaa);
-  A := a * a; a := A;
-  AaaAaaaaa(Aaaaaaa, A); Aaa(A);
-  for a := ? to A do Aaaaaaa[a] := a;
-  for A := ? to Aaaaa(A * Aaaa?.Aaaaaaa_Aaaaaa.Aaaaaaaa * ?.??) do begin
-    a := Aaaaaa(a);
-    a.Aaaaaa.Aaaaa.Aaaaa:=(Aaaaaa(????????));
-    Aaaa_aaaaa := (Aaaaaaa[a] mod a) * aaaa;
-    Aaa_aaaaa := (Aaaaaaa[a] div a) * aaaa;
-    a.Aaaaaa.AaaaAaaa(Aaaa(Aaaa_aaaaa,Aaa_aaaaa,Aaaa_aaaaa+aaaa,Aaa_aaaaa+aaaa));
-    Aaa(a);
-    Aaaaaaa[a] := Aaaaaaa[a]; end;
-  Aaaa?.AaaaaAaa?.Aaaaaa.Aaaa(?,?,a);
+  i := Ceil(Form1.PaintBox1.Height / size);
+  m := Ceil(Form1.PaintBox1.Width / size);
+  N := i * m;
+  k := N;
+  SetLength(Squares, N);
+  Dec(N);
+  for i := 0 to N do Squares[i] := i;
+
+  for N := 0 to Round(N * Form2.Percent_Slider.Position * 0.01) do begin
+    i := Random(k);
+    b.Canvas.Brush.Color := (Random(16777216));
+    Left_coord := (Squares[i] mod m) * size;
+    Top_coord := (Squares[i] div m) * size;
+    b.Canvas.FillRect(Rect(Left_coord, Top_coord, Left_coord + size, Top_coord + size));
+    Dec(k);
+    Squares[i] := Squares[k]; end;
+  Form1.PaintBox1.Canvas.Draw(0, 0, b);
 end;
 
-procedure AAaaa?.AaaAaaaaaaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.AppDeactivate(Sender: TObject);
 begin
-  AaAaaaaaaaAaaAaa(Aaaaaa, ?);
-  AaAaaaaaaaAaaAaa(Aaaaaa, ?);
-  AaAaaaaaaaAaaAaa(Aaaaaa, ?);   
-  AaAaaaaaaaAaaAaa(Aaaaaa, ?);
+  UnRegisterHotKey(Handle, 0);
+  UnRegisterHotKey(Handle, 1);
+  UnRegisterHotKey(Handle, 2);
+  UnRegisterHotKey(Handle, 3);
 end;
 
-procedure AAaaa?.AaaAaaaaaaa(Aaaaaa: AAaaaaa);
-begin //aaaa aaaa Aaaaaa: Aaaa + Aaa + <Aaaaa aaaaaa aaa Aaaaa, a.a. aaaaa aaaaaaa> a aaaaaaaa AaaaAaaaaaaAaaaaa, aa aaaa aaaaaaaaa aaa a aaaaaaa AAA
-  AaaaaaaaAaaAaa(Aaaaaa, ?, AAA_AAAAAAA, Aaa('A'));
-  AaaaaaaaAaaAaa(Aaaaaa, ?, ?, ??); //Aaaaa - aaaaa
-  AaaaaaaaAaaAaa(Aaaaaa, ?, ?, AA_A?);             
-  AaaaaaaaAaaAaa(Aaaaaa, ?, AAA_AAAAAAA, Aaa('A'));
+procedure TForm1.AppActivate(Sender: TObject);
+begin //если надо Hotkey: Ctrl + Alt + <Любой символ или Shift, т.е. любая клавиша> и вызываем LoadDefaultConfig, то надо проверять ещё и нажатие ЛКМ
+  RegisterHotKey(Handle, 0, MOD_CONTROL, Ord('P'));
+  RegisterHotKey(Handle, 1, 0, 32); //Space - пауза
+  RegisterHotKey(Handle, 2, 0, VK_F2);
+  RegisterHotKey(Handle, 3, MOD_CONTROL, Ord('R'));
 end;
 
-procedure AAaaa?.AaaaAaaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.FormCreate(Sender: TObject);
 begin
-  a := AAaaaaa.Aaaaaa();
-  a.Aaaaa := AaaaaAaa?.Aaaaa - AaaaaAaa?.Aaaa;
-  a.Aaaaaa := AaaaaAaa?.Aaaaaa - AaaaaAaa?.Aaa;
-  AaaaaAaa?.AaaaaaaAaaaa:=Aaaaaaaa?.aaaaaaaaaaaa+[aaAaaaaa]; //aaaaa aa aaaa aaaaaaaa aaa aaaaaaaaaaa
-  AaaaaaAaaaaaaa:=Aaaa;  //aaaaaaa aaaaaaaaaaa (a.a. aaaa aaaaaaaa aa aaaaaaa, aa aaa aaaaaaaa aa aaaaaaaaaaa aaaaa)
-  a.Aaaaaa.Aaaa.Aaaa:=??;
-  a.Aaaaaa.Aaaa.Aaaa:='Aaaaa Aaa Aaaaa';
-  a.Aaaaaa.Aaaa.Aaaaa:=[aaAaaa];
-  a.Aaaaaa.Aaaaa.Aaaaa := Aaaa?.Aaaaa; a.Aaaaaa.AaaaAaaa(AaaaaaAaaa);
-  Aaaaaaaaaaa.AaAaaaaaaaaa := AaaAaaaaaaaaa;
-  Aaaaaaaaaaa.AaAaaaaaaa := AaaAaaaaaaa; 
+  b := TBitmap.Create();
+  b.Width := PaintBox1.Width - PaintBox1.Left;
+  b.Height := PaintBox1.Height - PaintBox1.Top;
+  PaintBox1.ControlStyle := Paintbox1.controlstyle + [csOpaque]; //чтобы не было мерцания при перерисовке
+  DoubleBuffered := True; //двойная буферизация (т.е. пока рисуется на монитор, то уже рисуется на виртуальный экран)
+  b.Canvas.Font.Size := 16;
+  b.Canvas.Font.Name := 'Times New Roman';
+  b.Canvas.Font.Style := [fsBold];
+  b.Canvas.Brush.Color := Form1.Color;
+  b.Canvas.FillRect(ClientRect);
+  Application.OnDeactivate := AppDeactivate;
+  Application.OnActivate := AppActivate;
 end;
 
-procedure AAaaa?.Aaaaa?Aaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-  if Aaaa?.aaAaaaaaAaaaaaa_aaaAa.Aaaaaaa then AaaaaaAaaaaaa()
-  else AaaAaaaaaa();
+  if Form2.isRandomSquares_chkBx.Checked then RandomSquares()
+  else AllSquares();
 end;
 
-procedure AAaaa?.AaaaAaaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.FormResize(Sender: TObject);
 begin
-  a.Aaaaa := AaaaaAaa?.Aaaaa;
-  a.Aaaaaa := AaaaaAaa?.Aaaaaa;
+  b.Width := PaintBox1.Width;
+  b.Height := PaintBox1.Height;
 end;
 
-procedure AAaaa?.AaaaaAaa?AaaAaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.PaintBox1DblClick(Sender: TObject);
 begin
-  Aaaa?.AaaaaAaaaaaa_aaaAaaaa(nil);
+  Form2.StartDrawing_btnClick(nil);
 end;
 
-procedure AAaaa?.Aaaaaaaaaa_aAaaaAaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.Properties_pMenuClick(Sender: TObject);
 begin
-  Aaaa?.Aaaa();
+  Form2.Show();
 end;
 
-procedure AAaaa?.AaaAaaa(var Aaaaaaa: AAaaaaaa);
+procedure TForm1.HotKeys(var Message: TMessage);
 begin
-  if(Aaaaaaa.AAaaaa=?) then Aaaaaaaaaa_aAaaaAaaaa(nil)
-    else if (Aaaaaaa.AAaaaa=?) then Aaaaa_aAaaaAaaaa(nil)
-       else if (Aaaaaaa.AAaaaa=?) then Aaaa?.AaaaaAaaaaaa_aaaAaaaa(nil)
-          else if (Aaaaaaa.AAaaaa=?) then Aaaa?.aaAaaaaaAaaaaaa_aaaAa.Aaaaaaa := Aaaa?.aaAaaaaaAaaaaaa_aaaAa.Aaaaaaa xor Aaaa
+  if (Message.WParam = 0) then Properties_pMenuClick(nil)
+  else if (Message.WParam = 1) then Pause_pMenuClick(nil)
+  else if (Message.WParam = 2) then Form2.StartDrawing_btnClick(nil)
+  else if (Message.WParam = 3) then Form2.isRandomSquares_chkBx.Checked := Form2.isRandomSquares_chkBx.Checked xor True
 end;
 
-procedure AAaaa?.Aaaaa_aAaaaAaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.Pause_pMenuClick(Sender: TObject);
 begin
-  if Aaaaa?.Aaaaaaa then Aaaaa?.Aaaaaaa := Aaaaa
-  else Aaaaa?.Aaaaaaa := Aaaa;
+  if Timer1.Enabled then Timer1.Enabled := False
+  else Timer1.Enabled := True;
 end;
 
-procedure AAaaa?.AaaaaAaa?Aaaaa(Aaaaaa: AAaaaaa);
+procedure TForm1.PaintBox1Paint(Sender: TObject);
 begin
-  AaaaaAaa?.Aaaaaa.Aaaa(?,?,a);
+  PaintBox1.Canvas.Draw(0, 0, b);
 end;
 
 end.
+

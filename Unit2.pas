@@ -1,184 +1,204 @@
-unit Aaaa?;
+unit Unit2;
 
 interface
 
 uses
-  Aaaaaaa, Aaaaa, AaaAaaaa, Aaaaa, Aaaaaaa, AaaAaaaa, Aaaaaaaa, Aaaa, Aaaaaaa, AaaAaaaa, Aaaaaaaa, AaaaaAAA, AAaaaAaaaaaa, Aaaa?,
-  AaaAaaaa;
+  Windows, Forms, SysUtils, Menus, Dialogs, StdCtrls, Controls, Spin, Classes,
+  IniFiles, Messages, ShellAPI, UFileCatcher, Unit1, ComCtrls;
 
-type               
-  AAaaa? = class(AAaaa)
-    AaaaAaaaaaaa_aaAaa: AAaaaAaaa;
-    Aaaa_aaAaa: AAaaaAaaa;
-    AaaaAaaaaaa_aaa: AAaaaaa;
-    AaaaaAaaaaaa_aaa: AAaaaaa;
-    AaaaAaaaaaaa_aaa: AAaaaa;
-    Aaaa_aaa: AAaaaa;
-    AaaaAaaa_AaaaAaa: AAaaaAaaaaa;
-    AaaaAaaa_aaaaAaa: AAaaaAaaaaa;
-    Aaaaaaa_aaaa: AAaaaAaaa;
-    Aaaaaaaaaaaaa_aaaa: AAaaaAaaa;
-    AaaaAaaa_aaaa: AAaaaAaaa;
-    AaaaAaaa_aaaa: AAaaaAaaa;
-    aaAaaaaaAaaaaaa_aaaAa: AAaaaaAaa;
-    Aaaaaaa_Aaaaaa: AAaaaaAaa;
-    Aaaaaaa_Aaaaa: AAaaaa;
-    procedure AaaaaAaaaaaa_aaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaAaaaaaa_aaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaaAaaaaaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaAaaaaaaa_aaAaaAaaAaaaa(Aaaaaa: AAaaaaa; var Aaa: Aaaa);
-    procedure AaaaAaaa_aaaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaAaaa_aaaaAaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaAaaaaa(Aaaaaa: AAaaaaa);
-    procedure AaaaAaaaaaaaaa(Aaaaaa: AAaaaaa);
-    procedure aaAaaaaaAaaaaaa_aaaAaAaaaa(Aaaaaa: AAaaaaa);
-    procedure Aaaaaaa_AaaaaaAaaaaa(Aaaaaa: AAaaaaa);
-    procedure Aaaaaaa_AaaaaaAaaaaaaAaaaa(Aaaaaa: AAaaaaa; AaaaaAaa: AAaaaa; var Aaaaaaa: Aaaaaaa);
-    procedure AaaaAaaaaaaa_aaAaaAaaaa(Aaaaaa: AAaaaaa);
+type
+  TForm2 = class(TForm)
+    TimeInterval_spEdt: TSpinEdit;
+    Size_spEdt: TSpinEdit;
+    StopDrawing_btn: TButton;
+    StartDrawing_btn: TButton;
+    TimeInterval_lbl: TLabel;
+    Size_lbl: TLabel;
+    SaveCnfg_SaveDlg: TSaveDialog;
+    LoadCnfg_openDlg: TOpenDialog;
+    Program_menu: TMainMenu;
+    Configuration_menu: TMenuItem;
+    LoadCnfg_menu: TMenuItem;
+    SaveCnfg_menu: TMenuItem;
+    isRandomSquares_chkBx: TCheckBox;
+    Percent_Slider: TTrackBar;
+    Percent_Label: TLabel;
+    procedure StartDrawing_btnClick(Sender: TObject);
+    procedure StopDrawing_btnClick(Sender: TObject);
+    procedure ValidSpinnerValue(Sender: TObject);
+    procedure TimeInterval_spEdtKeyPress(Sender: TObject; var Key: Char);
+    procedure LoadCnfg_menuClick(Sender: TObject);
+    procedure SaveCnfg_menuClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure isRandomSquares_chkBxClick(Sender: TObject);
+    procedure Percent_SliderChange(Sender: TObject);
+    procedure Percent_SliderContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+    procedure TimeInterval_spEdtClick(Sender: TObject);
   private
-    { Aaaaaaa aaaaaaaaaaaa }
+    { Private declarations }
   public
-    procedure AaaaAaaaa(var Aaa: AAAAaaaAaaaa); message AA_AAAAAAAAA; //aaaaaaaaaaaaaa aaaaa aaaaaaaa aa aaaaa
+    procedure DropFiles(var Msg: TWMDropFiles); message WM_DROPFILES; //перетаскивание файла настроек на форму
   end;
 
 var
-  Aaaa?: AAaaa?;
+  Form2: TForm2;
 
 implementation
 
-{$A *.aaa}
+{$R *.dfm}
 
-procedure AAaaa?.AaaaAaaaaaaa_aaAaaAaaAaaaa(Aaaaaa: AAaaaaa; var Aaa: Aaaa);
-begin        
-  if ((AaaAaaAaaaa(AA_AAAAAAA) < ?) and (Aaa = #?)) then (Aaaaaa as AAaaaAaaa).AaaaaaAaa(); //Aaaa+A
-  if not((AaaAaaAaaaa(AA_AAAAAAA)<?) and (aaa in [#??, #??, #?, #??])) and //aaaaa aaaaaaaaaaaa aaaaaaa: Aaaa+A/A/A/A
-    not(aaa in['?'..'?']) and (Aaa <> #?) then aaa := #? //aaaa aaaaaa aaaa a Aaaaaaaaa
-end;
-
-procedure AAaaa?.AaaaaAaaaaaaAaaaa(Aaaaaa: AAaaaaa);
-var a: Aaaaaaa; aaAaa: AAaaaAaaa;
+procedure TForm2.TimeInterval_spEdtKeyPress(Sender: TObject; var Key: Char);
 begin
-  aaAaa := Aaaaaa as AAaaaAaaa;
-  if not AaaAaaAaAaa(aaAaa.Aaaa, a) then aaAaa.Aaaaa := aaAaa.AaaAaaaa;
-  if a < aaAaa.AaaAaaaa then aaAaa.Aaaaa := aaAaa.AaaAaaaa;
-  if a > aaAaa.AaaAaaaa then aaAaa.Aaaaa := aaAaa.AaaAaaaa
+  if ((GetKeyState(VK_CONTROL) < 0) and (Key = #1)) then (Sender as TSpinEdit).SelectAll(); //Ctrl+A
+  if not ((GetKeyState(VK_CONTROL) < 0) and (key in [#26, #24, #3, #22])) and //можно использовать hotkeys: Ctrl+Z/X/C/V
+    not (key in ['0'..'9']) and (Key <> #8) then key := #0 //ввод только цифр и Backspace
 end;
 
-procedure AAaaa?.AaaaaAaaaaaa_aaaAaaaa(Aaaaaa: AAaaaaa);
-begin              
-  Aaaa?.Aaaaa();
-  a.Aaaaaa.AaaaAaaa(Aaaa?.AaaaaAaa?.AaaaaaAaaa);
-  Aaaa?.Aaaaa?.Aaaaaaa:=Aaaa;
-  Aaaa?.Aaaaa?.Aaaaaaaa:=AaaaAaaaaaaa_aaAaa.Aaaaa;
-  Aaaa?.aaaa:=Aaaa?.Aaaa_aaAaa.Aaaaa;
-  Aaaa?.Aaaaa?Aaaaa(nil);
-end;
-
-procedure AAaaa?.AaaaAaaaaaa_aaaAaaaa(Aaaaaa: AAaaaaa);
+procedure TForm2.ValidSpinnerValue(Sender: TObject);
+var
+  i: Integer;
+  spEdt: TSpinEdit;
 begin
-  Aaaa?.Aaaaa?.Aaaaaaa:=Aaaaa;
+  spEdt := Sender as TSpinEdit;
+  if not TryStrToInt(spEdt.Text, i) then spEdt.Value := spEdt.MinValue;
+  if i < spEdt.MinValue then spEdt.Value := spEdt.MinValue;
+  if i > spEdt.MaxValue then spEdt.Value := spEdt.MaxValue
 end;
 
-procedure AaaaAaaaAaaaaa(const aaaa: Aaaaaa; const AaAaaa: Aaaaaaa = Aaaaa; const Aaaaaa: AAaaaaa = nil);
-var aaaAaaa: AAaaAaaa;
+procedure TForm2.StartDrawing_btnClick(Sender: TObject);
 begin
-  aaaAaaa:=AAaaAaaa.Aaaaaa(aaaa);
-  with Aaaa? do begin
-    if AaAaaa then begin
-      aaaAaaa.AaaaaAaaaaaa('Aaaaaa','AaaaAaaaaaaa',AaaaAaaaaaaa_aaAaa.Aaaaa);
-      aaaAaaa.AaaaaAaaaaaa('Aaaaaa','Aaaa',Aaaa_aaAaa.Aaaaa);
-      aaaAaaa.AaaaaAaaa('Aaaaaa','aaAaaaaa',aaAaaaaaAaaaaaa_aaaAa.Aaaaaaa);
-      aaaAaaa.AaaaaAaaaaaa('Aaaaaa','Aaaaaaa',Aaaaaaa_Aaaaaa.Aaaaaaaa);
-      Aaaa?.Aaaaa(); end
+  Form2.Close();
+  b.Canvas.FillRect(Form1.PaintBox1.ClientRect);
+  Form1.Timer1.Enabled := True;
+  Form1.Timer1.Interval := TimeInterval_spEdt.Value;
+  Unit1.size := Form2.Size_spEdt.Value;
+  Form1.Timer1Timer(nil);
+end;
+
+procedure TForm2.StopDrawing_btnClick(Sender: TObject);
+begin
+  Form1.Timer1.Enabled := False;
+end;
+
+procedure SaveLoadConfig(const path: string; const IsSave: Boolean = False; const Sender: TObject = nil);
+var
+  iniCnfg: TIniFile;
+begin
+  iniCnfg := TIniFile.Create(path);
+  with Form2 do begin
+    if IsSave then begin
+      iniCnfg.WriteInteger('Config', 'TimeInterval', TimeInterval_spEdt.Value);
+      iniCnfg.WriteInteger('Config', 'Size', Size_spEdt.Value);
+      iniCnfg.WriteBool('Config', 'isRandom', isRandomSquares_chkBx.Checked);
+      iniCnfg.WriteInteger('Config', 'Percent', Percent_Slider.Position);
+      Form2.Close(); end
     else begin
-      if (Aaaaaa = nil) or (Aaaaaa = AaaaAaaaaaaa_aaAaa) then AaaaAaaaaaaa_aaAaa.Aaaaa := aaaAaaa.AaaaAaaaaaa('Aaaaaa','AaaaAaaaaaaa',??);
-      if (Aaaaaa = nil) or (Aaaaaa = Aaaa_aaAaa) then Aaaa_aaAaa.Aaaaa := aaaAaaa.AaaaAaaaaaa('Aaaaaa','Aaaa',???);
-      if (Aaaaaa = nil) or (Aaaaaa = aaAaaaaaAaaaaaa_aaaAa) then aaAaaaaaAaaaaaa_aaaAa.Aaaaaaa := aaaAaaa.AaaaAaaa('Aaaaaa','aaAaaaaa',Aaaaa);
-      if (Aaaaaa = nil) or (Aaaaaa = Aaaaaaa_Aaaaaa) then Aaaaaaa_Aaaaaa.Aaaaaaaa := aaaAaaa.AaaaAaaaaaa('Aaaaaa','Aaaaaaa',??); end;
+      if (Sender = nil) or (Sender = TimeInterval_spEdt) then TimeInterval_spEdt.Value := iniCnfg.ReadInteger('Config', 'TimeInterval', 45);
+      if (Sender = nil) or (Sender = Size_spEdt) then Size_spEdt.Value := iniCnfg.ReadInteger('Config', 'Size', 250);
+      if (Sender = nil) or (Sender = isRandomSquares_chkBx) then isRandomSquares_chkBx.Checked := iniCnfg.ReadBool('Config', 'isRandom', False);
+      if (Sender = nil) or (Sender = Percent_Slider) then Percent_Slider.Position := iniCnfg.ReadInteger('Config', 'Percent', 50); end;
   end;
 end;
 
-function AaaaAaaaaaaAaaaaa(const Aaaaaa: AAaaaaa): Aaaaaaa; //Aaaa aaaaaa Aaaa+Aaa aa aaaaaaaaa aa aaaaaaaaa aaaaaaaa aa aaaaaaaaa
-begin                                                                                        
-  Aaaaaa := (AaaAaaAaaaa(AA_AAAAAAA)<?) and (AaaAaaAaaaa(AA_AAAA)<?);
-  if Aaaaaa then
-    if (AaaAaaAaaaa(AA_AAAAA)<?) then with Aaaa? do begin
-      AaaaAaaaaaaaaa(nil); Aaaa?.AaaAaaaaaaaaa(nil);
-      if AaaaAaaa_aaaaAaa.Aaaaaaa then AaaaAaaaAaaaaa(AaaaAaaa_aaaaAaa.AaaaAaaa, Aaaaa, Aaaaaa);
-      Aaaa?.AaaAaaaaaaa(nil);
-    end else AaaaAaaaAaaaaa('', Aaaaa, Aaaaaa);
-end;
-
-procedure AAaaa?.AaaaAaaa_aaaaAaaaa(Aaaaaa: AAaaaaa);
+function LoadDefaultConfig(const Sender: TObject): Boolean; //Если нажали Ctrl+Alt по параметру то загружает значение по умолчанию
 begin
-  AaaaAaaaaaaaaa(nil); Aaaa?.AaaAaaaaaaaaa(nil);   
-  if AaaaaaaaaAaaaaa(AaaaaaaAaaaAaaa(AaaaAaaa_aaaaAaa.AaaaAaaa)) then AaaaAaaa_aaaaAaa.AaaaaaaAaa := AaaaaaaAaaaAaaa(AaaaAaaa_aaaaAaa.AaaaAaaa);
-  if AaaaAaaa_aaaaAaa.Aaaaaaa then begin
-    AaaaAaaaAaaaaa(AaaaAaaa_aaaaAaa.AaaaAaaa);
-    AaaaaAaaaaaa_aaaAaaaa(nil); end;
-  Aaaa?.AaaAaaaaaaa(nil);
+  Result := (GetKeyState(VK_CONTROL) < 0) and (GetKeyState(VK_MENU) < 0);
+  if Result then
+    if (GetKeyState(VK_SHIFT) < 0) then with Form2 do begin
+        FormDeactivate(nil);
+        Form1.AppDeactivate(nil);
+        if LoadCnfg_openDlg.Execute then SaveLoadConfig(LoadCnfg_openDlg.FileName, False, Sender);
+        Form1.AppActivate(nil); end
+    else SaveLoadConfig('', False, Sender);
 end;
 
-procedure AAaaa?.AaaaAaaa_aaaaAaaaa(Aaaaaa: AAaaaaa);
+procedure TForm2.LoadCnfg_menuClick(Sender: TObject);
 begin
-  AaaaAaaaaaaaaa(nil); Aaaa?.AaaAaaaaaaaaa(nil);      
-  if AaaaaaaaaAaaaaa(AaaaaaaAaaaAaaa(AaaaAaaa_aaaaAaa.AaaaAaaa)) then AaaaAaaa_aaaaAaa.AaaaaaaAaa := AaaaaaaAaaaAaaa(AaaaAaaa_aaaaAaa.AaaaAaaa);
-  if AaaaAaaa_AaaaAaa.Aaaaaaa then AaaaAaaaAaaaaa(AaaaAaaa_aaaaAaa.AaaaAaaa,Aaaa);
-  Aaaa?.AaaAaaaaaaa(nil);
+  FormDeactivate(nil);
+  Form1.AppDeactivate(nil);
+  if DirectoryExists(ExtractFilePath(LoadCnfg_openDlg.FileName)) then
+    LoadCnfg_openDlg.InitialDir := ExtractFilePath(LoadCnfg_openDlg.FileName);
+  if LoadCnfg_openDlg.Execute then begin
+    SaveLoadConfig(LoadCnfg_openDlg.FileName);
+    StartDrawing_btnClick(nil); end;
+  Form1.AppActivate(nil);
 end;
 
-procedure AAaaa?.AaaaAaaaaa(Aaaaaa: AAaaaaa);
-begin   
-  AaaaaaAaaaaaaa := Aaaa;
-  AaaaAaaa_AaaaAaa.AaaaAaaa := AaaaaaaAaaaAaaa(Aaaaaaaaaaa.AaaAaaa)+'AaaaaaAaaaa_AA_Aaaaaaa.aaa';
-  AaaaAaaa_aaaaAaa.AaaaAaaa := AaaaaaaAaaaAaaa(Aaaaaaaaaaa.AaaAaaa)+'AaaaaaAaaaa_AA_Aaaaaaa.aaa';
-  AaaaAaaaAaaaaa((AaaaaaaAaaaAaaa(Aaaaaaaaaaa.AaaAaaa)+'AaaaaaAaaaa_AA_Aaaaaaa.aaa'));
-  AaaaAaaaaaAaaaa(Aaaa.Aaaaaa, Aaaa); //aaaaa aaaaa aaaaaaaaa aaaaa
-  Aaaa?.a.Aaaaaa.AaaaAaa((a.Aaaaa div ?)-(a.Aaaaaa.AaaaAaaaa('Aaa aaaaaa aaaaaaaaa aaaaaaa aaaaaa AAA aaa AAA --> Aaaaaaaaa --> Aaaaaa aaaaaa aaaaaaaaa, aaaaaaa "Aaaaaaaa"') div ?),(a.Aaaaaa div ?),'Aaa aaaaaa aaaaaaaaa aaaaaaa aaaaaa AAA aaa AAA --> Aaaaaaaaa --> Aaaaaa aaaaaa aaaaaaaaa, aaaaaaa "Aaaaaaaa"');
-  Aaaa?.Aaaaa?.Aaaaaaaa := AaaaAaaaaaaa_aaAaa.Aaaaa;
-  Aaaa?.aaaa := Aaaa_aaAaa.Aaaaa;
+procedure TForm2.SaveCnfg_menuClick(Sender: TObject);
+begin
+  FormDeactivate(nil);
+  Form1.AppDeactivate(nil);
+  if DirectoryExists(ExtractFilePath(SaveCnfg_saveDlg.FileName)) then
+    SaveCnfg_saveDlg.InitialDir := ExtractFilePath(SaveCnfg_saveDlg.FileName);
+  if SaveCnfg_SaveDlg.Execute then
+    SaveLoadConfig(SaveCnfg_saveDlg.FileName, True);
+  Form1.AppActivate(nil);
 end;
 
-procedure AAaaa?.AaaaAaaaa(var Aaa: AAAAaaaAaaaa); //aaaaaaaaaaaaaa aaaaa aaaaaaaa aa aaaaa
-var a: Aaaaaaa; Aaaaaaa: AAaaaAaaaaaa;
+procedure TForm2.FormCreate(Sender: TObject);
+begin
+  DoubleBuffered := True;
+  SaveCnfg_SaveDlg.FileName := ExtractFilePath(Application.ExeName) + 'RandomColor_BG_Default.ini';
+  LoadCnfg_openDlg.FileName := ExtractFilePath(Application.ExeName) + 'RandomColor_BG_Default.ini';
+  SaveLoadConfig((ExtractFilePath(Application.ExeName) + 'RandomColor_BG_Default.ini'));
+  DragAcceptFiles(Self.Handle, True); //форма может принимать файлы
+  Unit1.b.Canvas.TextOut((b.Width div 2) -
+    (b.Canvas.TextWidth('Для старта программы нажмите дважды ЛКМ или ПКМ --> Установки --> Выбрав нужные установки, нажмите "Рисовать"') div 2),
+    (b.Height div 2), 'Для старта программы нажмите дважды ЛКМ или ПКМ --> Установки --> Выбрав нужные установки, нажмите "Рисовать"');
+  Form1.Timer1.Interval := TimeInterval_spEdt.Value;
+  Unit1.size := Size_spEdt.Value;
+end;
+
+procedure TForm2.DropFiles(var Msg: TWMDropFiles); //перетаскивание файла настроек на форму
+var
+  i: Integer;
+  Catcher: TFileCatcher;
 begin
   inherited;
-  Aaaaaaa := AAaaaAaaaaaa.Aaaaaa(Aaa.Aaaa);
+  Catcher := TFileCatcher.Create(Msg.Drop);
   try
-    if Aaaaaaa.AaaaAaaaa>? then //a.a. aaa aa aaaaa aaaaaaaaa aaa aaaaa, aa aaaaaaaaaa aaaaaa aaaaaa
-      for a := ? to Aaaa(Aaaaaaa.AaaaAaaaa) do
-        if AaaaaAaaa(AaaaaaaAaaaAaa(Aaaaaaa.Aaaaa[a])) = '.aaa' then begin
-          AaaaAaaaAaaaaa(Aaaaaaa.Aaaaa[a]);
-          AaaaaAaaaaaa_aaaAaaaa(nil);
-          Aaaaa; end;
-  finally Aaaaaaa.Aaaa; end;
-  Aaa.Aaaaaa := ?;
+    if Catcher.FileCount > 0 then //т.к. нам не нужно загружать все файлы, то загрузится только первый
+      for i := 0 to Pred(Catcher.FileCount) do
+        if LowerCase(ExtractFileExt(Catcher.Files[i])) = '.ini' then begin
+          SaveLoadConfig(Catcher.Files[i]);
+          StartDrawing_btnClick(nil);
+          Break; end;
+  finally Catcher.Free;
+  end;
+  Msg.Result := 0;
 end;
 
-procedure AAaaa?.AaaaAaaaaaaaaa(Aaaaaa: AAaaaaa);
-var a: Aaaaaaa;
+procedure TForm2.FormDeactivate(Sender: TObject);
+var
+  i: Integer;
 begin
-  for a:=? to AaaaaaaaaAaaaa-? do
-    if Aaaaaaaaaa[a] is AAaaaAaaa then (Aaaaaaaaaa[a] as AAaaaAaaa).AaAaaa(Aaaaaaaaaa[a] as AAaaaAaaa)
+  for i := 0 to ComponentCount - 1 do
+    if Components[i] is TSpinEdit then
+      (Components[i] as TSpinEdit).OnExit(Components[i] as TSpinEdit)
 end;
 
-procedure AAaaa?.aaAaaaaaAaaaaaa_aaaAaAaaaa(Aaaaaa: AAaaaaa);
-begin      
-  if AaaaAaaaaaaAaaaaa(Aaaaaa) then Aaaa;
-  Aaaaaaa_Aaaaaa.Aaaaaaa := aaAaaaaaAaaaaaa_aaaAa.Aaaaaaa;
-  Aaaaaaa_Aaaaa.Aaaaaaa := Aaaaaaa_Aaaaaa.Aaaaaaa;
-end;
-
-procedure AAaaa?.Aaaaaaa_AaaaaaAaaaaa(Aaaaaa: AAaaaaa);
+procedure TForm2.isRandomSquares_chkBxClick(Sender: TObject);
 begin
-  Aaaaaaa_Aaaaa.Aaaaaaa:=AaaAaAaa(Aaaaaaa_Aaaaaa.Aaaaaaaa)+'%';
+  if LoadDefaultConfig(Sender) then Exit;
+  Percent_Slider.Enabled := isRandomSquares_chkBx.Checked;
+  Percent_Label.Enabled := Percent_Slider.Enabled;
 end;
 
-procedure AAaaa?.Aaaaaaa_AaaaaaAaaaaaaAaaaa(Aaaaaa: AAaaaaa; AaaaaAaa: AAaaaa; var Aaaaaaa: Aaaaaaa);
-begin AaaaAaaaaaaAaaaaa(Aaaaaa); end;
+procedure TForm2.Percent_SliderChange(Sender: TObject);
+begin
+  Percent_Label.Caption := IntToStr(Percent_Slider.Position) + '%';
+end;
 
-procedure AAaaa?.AaaaAaaaaaaa_aaAaaAaaaa(Aaaaaa: AAaaaaa);
-begin AaaaAaaaaaaAaaaaa(Aaaaaa); end;
+procedure TForm2.Percent_SliderContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+begin
+  LoadDefaultConfig(Sender);
+end;
+
+procedure TForm2.TimeInterval_spEdtClick(Sender: TObject);
+begin
+  LoadDefaultConfig(Sender);
+end;
 
 end.
 
